@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shop</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Shop</h1>
+    <p>Welcome to the pet shop! Here are the items for sale:</p>
+    <ul>
+        <li>Dog food: $10</li>
+        <li>Cat food: $8</li>
+        <li>Hamster wheel: $5</li>
+        <li>Fish tank: $15</li>
+    </ul>
+
+    <div class="nav">
+        <button class="button-nav"><a href="{{ url_for('home') }}">Home</a></button>
+        <button class="button-nav"><a href="{{ url_for('shop') }}">Shop</a></button>
+        <button class="button-nav"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
+        <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
+    </div>
+</body>
+</html>
+
