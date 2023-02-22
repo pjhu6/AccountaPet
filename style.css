@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #F5F5F5;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.button-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 25%;
+    height: 25px;
+    background-color: #87CEFA;
+    overflow: auto;
+}
+
+.button-nav a {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px;
+    height: 100px;
+    width: 200px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+
