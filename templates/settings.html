@@ -8,9 +8,29 @@
     <h1>Settings</h1>
     <p>Here are your current settings:</p>
     <ul>
-        <li>Sound: On</li>
-        <li>Notifications: Off</li>
-        <li>Language: English</li>
+        <li>Sound: 
+            <label class="toggle-switch">
+                <input type="checkbox" id="sound-toggle" />
+                <span class="switch"></span>
+            </label>
+        </li>
+        <li>Notifications:
+            <label class="toggle-switch">
+                <input type="checkbox" id="notification-toggle" />
+                <span class="switch"></span>
+            </label>
+        </li>
+        <li>Language: 
+            <div class="language-dropdown">
+                <button class="language-dropdown-toggle">Select Language</button>
+                <ul class="language-dropdown-menu">
+                  <li><a href="#">English</a></li>
+                  <li><a href="#">Spanish</a></li>
+                  <li><a href="#">French</a></li>
+                  <li><a href="#">German</a></li>
+                </ul>
+            </div>
+        </li>
     </ul>
 
     <div class="nav">

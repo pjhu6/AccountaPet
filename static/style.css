@@ -38,3 +38,104 @@ h1 {
 }
 
 
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+  }
+  
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .switch {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 17px;
+    -webkit-transition: background-color 0.4s;
+    transition: background-color 0.4s;
+  }
+  
+  .switch:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+  }
+  
+  input:checked + .switch {
+    background-color: #2196F3;
+  }
+  
+  input:checked + .switch:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
+
+  .language-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .language-dropdown-toggle {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .language-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+  }
+  
+  .language-dropdown-menu li {
+    padding: 4px 8px;
+  }
+  
+  .language-dropdown-menu li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .language-dropdown-menu a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .language-dropdown-menu a:hover {
+    color: #333;
+    text-decoration: underline;
+  }
+  
+  .language-dropdown:hover .language-dropdown-menu {
+    display: block;
+  }
