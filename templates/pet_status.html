@@ -22,7 +22,8 @@
 
   <script>
     function feedPet() {
-        fetch('/feed')
+        /* TODO actually implement user endpoints */
+        fetch('/bobjoe123/feed')
             .then(response => response.json())
             .then(data => {
                 const hungerElement = document.getElementById("hunger");
