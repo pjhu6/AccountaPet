@@ -30,7 +30,12 @@ class VirtualPet:
         pass
 
     def getAge(self):
-        return "3 years old"
+        today = datetime.datetime.now()
+        delta = today - self.birthday
+        years = delta.days // 365
+        months = (delta.days % 365) // 30
+        days = (delta.days % 365) % 30
+        return f"{years} years {months} months {days} days old"
     
     def statusToJson(self):
         return json.dumps({
