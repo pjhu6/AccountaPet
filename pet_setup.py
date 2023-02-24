@@ -12,28 +12,6 @@ class VirtualPet:
         self.happiness = happiness
         self.birthday = birthday
 
-        self.saveToJson()
-
-    def feed(self, consumable):
-        self.hunger -= consumable.hunger_value
-        self.happiness += consumable.happiness_value
-        self.saveToJson()
-        print(f"{self.name} has been fed!")
-        return self.statusToJson()
-
-    def play(self):
-        self.happiness += 1
-        self.hunger += 1
-        self.saveToJson()
-        print(f"{self.name} had fun playing!")
-
-    def recommend(self):
-        # TODO: some search algorithm
-        return "Dog food"
-
-    def calculate_happiness(self):
-        pass
-
     def getAge(self):
         today = datetime.datetime.now()
         delta = today - self.birthday
@@ -41,36 +19,6 @@ class VirtualPet:
         months = (delta.days % 365) // 30
         days = (delta.days % 365) % 30
         return f"{years} years {months} months {days} days old"
-    
-    def statusToJson(self):
-        return json.dumps({
-            "hunger": self.hunger,
-            "happiness": self.happiness,
-        })
-
-    def saveToJson(self, fileName="pet.json"):
-        pet_dict = {
-            "name": self.name,
-            "species": self.species,
-            "hunger": self.hunger,
-            "happiness": self.happiness,
-            "birthday": self.birthday.strftime("%Y-%m-%d")
-        }
-        with open(fileName, "w") as f:
-            json.dump(pet_dict, f)
 
     def __str__(self):
         return f"{self.name} ({self.species}) - Hunger: {self.hunger}, Happiness: {self.happiness}"
-
-def readFromJson(fileName="pet.json"):
-    with open(fileName, "r") as f:
-        pet_dict = json.load(f)
-    
-    pet = VirtualPet(
-        pet_dict["name"],
-        pet_dict["species"],
-        pet_dict["hunger"],
-        pet_dict["happiness"],
-        datetime.datetime.strptime(pet_dict["birthday"], "%Y-%m-%d")
-    )
-    return pet

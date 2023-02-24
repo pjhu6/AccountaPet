@@ -1,7 +1,7 @@
 from flask import Flask, abort, redirect, render_template, url_for
 import petbehavior
 import foodrecc
-import pet_setup
+from pet_setup import VirtualPet
 import os
 from consumable import Consumable
 from user import User
@@ -10,19 +10,16 @@ app = Flask(__name__)
 
 # TODO: implement users
 users = {}
+
 ### TEST USER REMOVE LATER ###
 test_user_id = 'bobjoe123'
-test_user = User(test_user_id)
-users['bobjoe123'] = test_user
-test_user.pet = pet_setup.VirtualPet("Fluffy II", "cat", 5)
-### TEST USER REMOVE LATER ###
-
-pet = None
-pet_file = "pet.json"
-if os.path.isfile(pet_file):
-    pet = pet_setup.readFromJson(pet_file)
+user_file = f'{test_user_id}.json'
+if os.path.isfile(user_file):
+    users[test_user_id] = User.from_json(user_file)
 else:
-    pet = pet_setup.VirtualPet("Fluffy", "cat", 3)
+    users[test_user_id] = User(test_user_id, VirtualPet("Fluffy II", "cat", 5))
+
+### TEST USER REMOVE LATER ###
 
 @app.route('/')
 def index():
@@ -39,7 +36,7 @@ def shop():
 @app.route('/pet_status')
 def pet_status():
     # TODO make these dynamic urls with user_id, don't hardcode pet
-    return render_template('pet_status.html', pet=users['bobjoe123'].pet)
+    return render_template('pet_status.html', user=users['bobjoe123'])
 
 @app.route('/settings')
 def settings():
@@ -54,9 +51,8 @@ def feed(user_id):
     if user_id not in users:
         print(f'User {user_id} does not exist.')
         abort(404)
-    user_pet = users[user_id].pet
-    print(f"User {user_id} is feeding their pet named {user_pet.name}")
-    return user_pet.feed(Consumable("dog food", 1, 1))
+    print(f"User {user_id} is feeding their pet named {users[user_id].pet.name}")
+    return users[user_id].feed(Consumable("dog food", 1, 1))
 
 @app.route('/<user_id>/recomend')
 def recommend(user_id):
