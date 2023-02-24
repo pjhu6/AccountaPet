@@ -2,10 +2,16 @@ from flask import Flask, render_template
 import petbehavior
 import foodrecc
 import pet_setup
+import os
 
 app = Flask(__name__)
 
-pet = pet_setup.VirtualPet("Fluffy", "cat", 3)
+pet = None
+pet_file = "pet.json"
+if os.path.isfile(pet_file):
+    pet = pet_setup.readFromJson(pet_file)
+else:
+    pet = pet_setup.VirtualPet("Fluffy", "cat", 3)
 
 @app.route('/')
 def index():
