@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+import petbehavior
+import foodrecc
 
 app = Flask(__name__)
 
