@@ -27,11 +27,11 @@ def index():
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', user=users['bobjoe123'])
 
 @app.route('/shop')
 def shop():
-    return render_template('shop.html')
+    return render_template('shop.html', user=users['bobjoe123'])
 
 @app.route('/pet_status')
 def pet_status():
@@ -40,7 +40,7 @@ def pet_status():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')
+    return render_template('settings.html', user=users['bobjoe123'])
 
 
 # User actions

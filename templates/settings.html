@@ -9,6 +9,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="nav">
+        <button class="button-nav"><a href="{{ url_for('home') }}">Home</a></button>
+        <button class="button-nav"><a href="{{ url_for('shop') }}">Shop</a></button>
+        <button class="button-nav"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
+        <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
+    </div>
     <h1>Settings</h1>
     <p>Here are your current settings:</p>
     <ul>
@@ -36,13 +42,6 @@
             </div>
         </li>
     </ul>
-
-    <div class="nav">
-        <button class="button-nav"><a href="{{ url_for('home') }}">Home</a></button>
-        <button class="button-nav"><a href="{{ url_for('shop') }}">Shop</a></button>
-        <button class="button-nav"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
-        <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
-    </div>
 </body>
 </html>
 
