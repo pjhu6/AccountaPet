@@ -1,7 +1,5 @@
-from flask import Flask, abort, redirect, render_template, url_for
-import petbehavior
-import foodrecc
-from pet_setup import VirtualPet
+from flask import Flask, abort, render_template
+from virtual_pet import VirtualPet
 import os
 from consumable import Consumable
 from user import User
@@ -56,7 +54,10 @@ def feed(user_id):
 
 @app.route('/<user_id>/recomend')
 def recommend(user_id):
-    pass
+    if user_id not in users:
+        print(f'User {user_id} does not exist.')
+        abort(404)
+    return users[user_id].recommend()
 
 @app.route('/<user_id>/purchase')
 def purchase(user_id):

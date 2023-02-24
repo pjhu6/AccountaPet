@@ -1,5 +1,5 @@
 import json
-import pet_setup
+import virtual_pet
 import datetime
 
 class User:
@@ -87,7 +87,7 @@ class User:
             hunger = pet_data["hunger"]
             happiness = pet_data["happiness"]
             birthday = datetime.datetime.strptime(pet_data["birthday"], "%Y-%m-%d")
-            pet = pet_setup.VirtualPet(name, species, hunger, happiness, birthday)
+            pet = virtual_pet.VirtualPet(name, species, hunger, happiness, birthday)
             
         return cls(user_id, points=points, consumables=consumables, pet=pet)
 
