@@ -14,10 +14,28 @@
     <ul>
         <li>Name: {{pet.name}}</li>
         <li>Species: {{pet.species}}</li>
-        <li>Hunger: {{pet.hunger}}</li>
-        <li>Happiness: {{pet.happiness}}</li>
+        <li id="hunger">Hunger: {{pet.hunger}}</li>
+        <li id="happiness">Happiness: {{pet.happiness}}</li>
         <li>Age: {{pet.getAge()}}</li>
     </ul>
+    <button onclick="feedPet()">Feed Pet</button>
+
+  <script>
+    function feedPet() {
+        fetch('/feed')
+            .then(response => response.json())
+            .then(data => {
+                const hungerElement = document.getElementById("hunger");
+                hungerElement.textContent = `Hunger: ${data.hunger}`;
+
+                const happinessElement = document.getElementById("happiness");
+                happinessElement.textContent = `Happiness: ${data.happiness}`;
+            })
+            .catch(error => {
+            console.error(error);
+            });
+    }
+  </script>
 
     <div class="nav">
         <button class="button-nav"><a href="{{ url_for('home') }}">Home</a></button>

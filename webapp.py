@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, url_for
 import petbehavior
 import foodrecc
 import pet_setup
@@ -32,6 +32,22 @@ def pet_status():
 @app.route('/settings')
 def settings():
     return render_template('settings.html')
+
+
+# User actions
+
+@app.route('/feed')
+def feed():
+    pet.feed()
+    return pet.statusToJson()
+
+@app.route('/recomend')
+def recommend():
+    pass
+
+@app.route('/purchase')
+def purchase():
+    pass
 
 if __name__ == '__main__':
     app.run()

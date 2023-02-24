@@ -36,6 +36,12 @@ class VirtualPet:
         months = (delta.days % 365) // 30
         days = (delta.days % 365) % 30
         return f"{years} years {months} months {days} days old"
+    
+    def statusToJson(self):
+        return json.dumps({
+            "hunger": self.hunger,
+            "happiness": self.happiness,
+        })
 
     def saveToJson(self, fileName="pet.json"):
         pet_dict = {
