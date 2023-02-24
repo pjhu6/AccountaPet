@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, abort, redirect, render_template, url_for
 import petbehavior
 import foodrecc
 import pet_setup
@@ -51,6 +51,9 @@ def settings():
 @app.route('/<user_id>/feed')
 def feed(user_id):
     # TODO replace with consumable of user's choice
+    if user_id not in users:
+        print(f'User {user_id} does not exist.')
+        abort(404)
     user_pet = users[user_id].pet
     print(f"User {user_id} is feeding their pet named {user_pet.name}")
     return user_pet.feed(Consumable("dog food", 1, 1))
