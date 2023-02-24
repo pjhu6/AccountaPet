@@ -31,6 +31,12 @@ class VirtualPet:
 
     def getAge(self):
         return "3 years old"
+    
+    def statusToJson(self):
+        return json.dumps({
+            "hunger": self.hunger,
+            "happiness": self.happiness,
+        })
 
     def saveToJson(self, fileName="pet.json"):
         pet_dict = {
