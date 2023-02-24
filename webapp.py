@@ -1,8 +1,11 @@
 from flask import Flask, render_template
 import petbehavior
 import foodrecc
+import pet_setup
 
 app = Flask(__name__)
+
+pet = pet_setup.VirtualPet("Fluffy", "cat", 3)
 
 @app.route('/')
 def index():
@@ -18,7 +21,7 @@ def shop():
 
 @app.route('/pet_status')
 def pet_status():
-    return render_template('pet_status.html')
+    return render_template('pet_status.html', pet=pet)
 
 @app.route('/settings')
 def settings():

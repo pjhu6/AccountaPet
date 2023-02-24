@@ -23,5 +23,8 @@ class VirtualPet:
     def calculate_happiness(self):
         pass
 
+    def getAge(self):
+        return "3 years old"
+
     def __str__(self):
         return f"{self.name} ({self.species}) - Hunger: {self.hunger}, Happiness: {self.happiness}"
