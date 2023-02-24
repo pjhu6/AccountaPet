@@ -14,17 +14,22 @@ class VirtualPet:
 
         self.saveToJson()
 
-    def feed(self):
-        self.hunger -= 1
-        self.happiness += 1
+    def feed(self, consumable):
+        self.hunger -= consumable.hunger_value
+        self.happiness += consumable.happiness_value
         self.saveToJson()
         print(f"{self.name} has been fed!")
+        return self.statusToJson()
 
     def play(self):
         self.happiness += 1
         self.hunger += 1
         self.saveToJson()
         print(f"{self.name} had fun playing!")
+
+    def recommend(self):
+        # TODO: some search algorithm
+        return "Dog food"
 
     def calculate_happiness(self):
         pass
