@@ -30,7 +30,7 @@
     <script>
     function feedPet() {
         /* TODO actually implement user endpoints */
-        fetch('/bobjoe123/feed')
+        fetch('/{{user.user_id}}/feed')
             .then(response => response.json())
             .then(data => {
                 const hungerElement = document.getElementById("hunger");

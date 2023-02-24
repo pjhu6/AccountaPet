@@ -3,10 +3,10 @@ import pet_setup
 import datetime
 
 class User:
-    def __init__(self, user_id, pet=None):
+    def __init__(self, user_id, points=0, consumables=[], pet=None):
         self.user_id = user_id
-        self.points = 0
-        self.consumables = []
+        self.points = points
+        self.consumables = consumables
         self.pet = pet
 
         self.to_json(filepath=f'{self.user_id}.json')
@@ -89,7 +89,7 @@ class User:
             birthday = datetime.datetime.strptime(pet_data["birthday"], "%Y-%m-%d")
             pet = pet_setup.VirtualPet(name, species, hunger, happiness, birthday)
             
-        return cls(user_id, pet=pet)
+        return cls(user_id, points=points, consumables=consumables, pet=pet)
 
 
     @classmethod

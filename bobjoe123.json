@@ -1,12 +1,12 @@
 {
     "user_id": "bobjoe123",
-    "points": 0,
+    "points": 100,
     "consumables": [],
     "pet": {
         "name": "Fluffy II",
         "species": "cat",
-        "hunger": 3,
-        "happiness": 7,
+        "hunger": 4,
+        "happiness": 6,
         "birthday": "2020-12-25"
     }
 }

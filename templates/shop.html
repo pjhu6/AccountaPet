@@ -17,12 +17,46 @@
     </div>
     <h1>Shop</h1>
     <p>Welcome to the pet shop! Here are the items for sale:</p>
+    <p>You have ${{user.points}}</p>
     <ul>
-        <li>Dog food: $10</li>
+        <li>Dog food: $10 <button onclick="buyItem(DOG_FOOD, 10)">Buy</button></li>
         <li>Cat food: $8</li>
         <li>Hamster wheel: $5</li>
         <li>Fish tank: $15</li>
     </ul>
+    <script>
+    function buyItem(itemName, itemPrice) {
+        const userPoints = {{ user.points }};
+        if (userPoints >= itemPrice) {
+            // Make a purchase
+            fetch('/{{ user.user_id }}/purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'item_name': itemName,
+                    'item_price': itemPrice
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update user points
+                const userPointsElement = document.querySelector('p');
+                userPointsElement.textContent = `You have $${data.points}`;
+
+                // Display success message
+                alert(`You have successfully purchased ${itemName}!`);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        } else {
+            // Display error message
+            alert(`You do not have enough points to buy ${itemName}.`);
+        }
+    }
+    </script>
 </body>
 </html>
 
