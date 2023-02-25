@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS pets (
-    pet_id text PRIMARY KEY,
     pet_name text DEFAULT NULL,
     species text DEFAULT NULL,
     hunger integer DEFAULT 5,
