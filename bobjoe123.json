@@ -5,8 +5,8 @@
     "pet": {
         "name": "Fluffy II",
         "species": "cat",
-        "hunger": 4,
-        "happiness": 6,
+        "hunger": -26,
+        "happiness": 36,
         "birthday": "2020-12-25"
     }
 }
