@@ -3,6 +3,7 @@ from virtual_pet import VirtualPet
 import os
 from consumable import Consumable
 from user import User
+import db
 
 app = Flask(__name__)
 
@@ -11,11 +12,22 @@ users = {}
 
 ### TEST USER REMOVE LATER ###
 test_user_id = 'bobjoe123'
+db.execute("DROP TABLE IF EXISTS users") # remove these later
+db.execute("DROP TABLE IF EXISTS consumables")
+db.execute("DROP TABLE IF EXISTS pets")
+db.build()
+
+
 user_file = f'{test_user_id}.json'
 if os.path.isfile(user_file):
     users[test_user_id] = User.from_json(user_file)
 else:
     users[test_user_id] = User(test_user_id, VirtualPet("Fluffy II", "cat", 5))
+
+db.execute("INSERT INTO users (user_id) VALUES (?)", test_user_id)
+db.commit()
+test_pet_data = db.record("SELECT pet_name, species FROM pets WHERE user_id = ?", test_user_id)
+print(f"[{test_user_id}] has a [{test_pet_data[1]}] named [{test_pet_data[0]}]")
 
 ### TEST USER REMOVE LATER ###
 

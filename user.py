@@ -1,13 +1,14 @@
 import json
 import virtual_pet
 import datetime
+import db
 
 class User:
     def __init__(self, user_id, points=0, consumables=[], pet=None):
         self.user_id = user_id
         self.points = points
         self.consumables = consumables
-        self.pet = pet
+        self.pet = self.set_pet(pet)
 
         self.to_json(filepath=f'{self.user_id}.json')
 
@@ -22,6 +23,7 @@ class User:
     def feed(self, consumable):
         self.pet.hunger -= consumable.hunger_value
         self.pet.happiness += consumable.happiness_value
+        # TODO update db pet info
         self.to_json(filepath=f'{self.user_id}.json')
         print(f"{self.pet.name} has been fed!")
         return self.statusToJson()
@@ -41,6 +43,13 @@ class User:
 
     def calculate_happiness(self):
         pass
+
+    def set_pet(self, pet):
+        # TODO set pet in db
+        db.execute("INSERT INTO pets (pet_name, species, hunger, happiness, birthday, user_id) VALUES (?, ?, ?, ?, ?, ?)",\
+                   pet.name, pet.species, pet.hunger, pet.happiness, pet.birthday, self.user_id)
+        db.commit()
+        return pet
 
 
     def statusToJson(self):
