@@ -71,9 +71,14 @@ def recommend(user_id):
         abort(404)
     return users[user_id].recommend()
 
-@app.route('/<user_id>/purchase')
-def purchase(user_id):
-    pass
+@app.route('/<user_id>/purchase/<cost>')
+def purchase(user_id,cost):
+     if user_id not in users:
+        print(f'User {user_id} does not exist.')
+        abort(404)
+     print("Purchase!")
+     print(cost)
+     return users[user_id].purchase(Consumable("dog food",0,0,10))
 
 if __name__ == '__main__':
     app.run()

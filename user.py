@@ -12,12 +12,22 @@ class User:
 
         self.to_json(filepath=f'{self.user_id}.json')
 
+    def getPoints(self):
+        return self.points
+
 
     def purchase(self, consumable):
-        points -= consumable.cost
-        self.consumables.append(consumable)
-
+        #print("ok here")
+        #self.points = self.points - 100
+        if self.points >= float(consumable.cost):
+            self.points -= float(consumable.cost)
+            #self.consumables.append(consumable)
+        else:
+            print("Not enough funds.")
+       
         self.to_json(filepath=f'{self.user_id}.json')
+        #print('we are accessing this function')
+        return self.bankToJson()
     
 
     def feed(self, consumable):
@@ -27,6 +37,7 @@ class User:
         self.to_json(filepath=f'{self.user_id}.json')
         print(f"{self.pet.name} has been fed!")
         return self.statusToJson()
+    
 
 
     def play(self):
@@ -57,6 +68,9 @@ class User:
             "hunger": self.pet.hunger,
             "happiness": self.pet.happiness,
         })
+    
+    def bankToJson(self):
+        return json.dumps({"points": self.points})
 
 
     def to_dict(self):
