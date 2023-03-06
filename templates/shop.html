@@ -20,7 +20,7 @@
     <p id="points"> Balance: ${{user.getPoints()}}</p>
     
     <p>Dog food: $10</p> 
-    <button onclick="buyItem()">Buy</button></li>
+    <button onclick="buyItem('DOG_FOOD', 10)">Buy</button></li>
     <p> Cat food: $8</p> 
     <button onclick="buyItem('CAT_FOOD', 8)">Buy</button></li>
     <p>Hamster wheel: $5</p> 
@@ -30,22 +30,33 @@
     
     <script>
         
-    function buyItem(itemCost) {
+        function buyItem(itemId, itemPrice) {
+        const userPoints = {{user.points}};
+        if (userPoints < itemPrice) {
+            // Display error message
+            alert(`You do not have enough points to buy ${itemId}.`);
+            return;
+        }
+
         // Make a purchase
-            fetch('/{{ user.user_id }}/purchase')
-                .then(response => response.json())
-                .then(data => {
-                // Update user points
-                //const userPointsElement = document.querySelector('p');
-                const userPointsElement = document.getElementById("points");
-                userPointsElement.textContent = `Balance: $${data.points}`;
-                // Display success message
-                //alert(`You have successfully purchased ${itemName}!`);
+        fetch('/{{user.user_id}}/purchase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'item_id': itemId,
+                'item_price': itemPrice
             })
-            .catch(error => {
-                console.error(error);
-            });
-    
+        })
+        .then(response => response.json())
+        .then(data => {
+            const userPointsElement = document.getElementById("points");
+            userPointsElement.textContent = `Balance: $${data.points}`;
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }
     </script>
 </body>

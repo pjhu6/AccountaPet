@@ -1,5 +1,6 @@
 from os.path import isfile
 from sqlite3 import connect
+from consumable import Consumable
 
 DB_PATH = "db/database.db"
 BUILD_PATH = "db/build.sql"
@@ -60,3 +61,11 @@ def scriptexec(path):
 
 def getpath():
 	return DB_PATH
+
+# Table specific methods
+def build_consumable(c_id):
+	c_data = record("SELECT c_id, c_name, cost, hunger_value, happiness_value FROM all_consumables WHERE c_id = ?", c_id)
+	return Consumable(c_data[0], c_data[1], c_data[2], c_data[3], c_data[4])
+
+def append_consumable(user_id, consumable):
+	execute("INSERT INTO user_consumables (c_id, user_id) VALUES (?, ?)", consumable.id, user_id)

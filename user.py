@@ -16,17 +16,22 @@ class User:
         return self.points
 
 
-    def purchase(self, consumable):
-        #print("ok here")
-        #self.points = self.points - 100
-        if self.points >= float(consumable.cost):
-            self.points -= float(consumable.cost)
-            #self.consumables.append(consumable)
-        else:
+    def purchase(self, consumable_id):
+        try:
+            consumable = db.build_consumable(consumable_id)
+        except TypeError:
+            print(f"Consumable with id {consumable_id} does not exist in database.")
+            return self.bankToJson()
+        
+        if self.points < float(consumable.cost):
             print("Not enough funds.")
+            return self.bankToJson()
+        self.points -= float(consumable.cost)
+        self.consumables.append(consumable)
+        db.append_consumable(self.user_id, consumable)
+        print(f"{self.user_id} now has these consumables: {[str(consumable) for consumable in self.consumables]}")
        
-        self.to_json(filepath=f'{self.user_id}.json')
-        #print('we are accessing this function')
+        #self.to_json(filepath=f'{self.user_id}.json')
         return self.bankToJson()
     
 
@@ -34,7 +39,7 @@ class User:
         self.pet.hunger -= consumable.hunger_value
         self.pet.happiness += consumable.happiness_value
         # TODO update db pet info
-        self.to_json(filepath=f'{self.user_id}.json')
+        #self.to_json(filepath=f'{self.user_id}.json')
         print(f"{self.pet.name} has been fed!")
         return self.statusToJson()
     
@@ -43,7 +48,7 @@ class User:
     def play(self):
         self.pet.happiness += 1
         self.pet.hunger += 1
-        self.to_json(filepath=f'{self.user_id}.json')
+        #self.to_json(filepath=f'{self.user_id}.json')
         print(f"{self.name} had fun playing!")
 
 
@@ -56,7 +61,6 @@ class User:
         pass
 
     def set_pet(self, pet):
-        # TODO set pet in db
         db.execute("INSERT INTO pets (pet_name, species, hunger, happiness, birthday, user_id) VALUES (?, ?, ?, ?, ?, ?)",\
                    pet.name, pet.species, pet.hunger, pet.happiness, pet.birthday, self.user_id)
         db.commit()

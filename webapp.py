@@ -1,4 +1,4 @@
-from flask import Flask, abort, render_template
+from flask import Flask, abort, render_template, request
 from virtual_pet import VirtualPet
 import os
 from consumable import Consumable
@@ -13,16 +13,17 @@ users = {}
 ### TEST USER REMOVE LATER ###
 test_user_id = 'bobjoe123'
 db.execute("DROP TABLE IF EXISTS users") # remove these later
-db.execute("DROP TABLE IF EXISTS consumables")
+db.execute("DROP TABLE IF EXISTS user_consumables")
+db.execute("DROP TABLE IF EXISTS all_consumables")
 db.execute("DROP TABLE IF EXISTS pets")
 db.build()
 
 
-user_file = f'{test_user_id}.json'
+'''user_file = f'{test_user_id}.json'
 if os.path.isfile(user_file):
     users[test_user_id] = User.from_json(user_file)
-else:
-    users[test_user_id] = User(test_user_id, VirtualPet("Fluffy II", "cat", 5))
+else:'''
+users[test_user_id] = User(test_user_id, points = 500, pet = VirtualPet("Fluffy II", "cat", 5))
 
 db.execute("INSERT INTO users (user_id) VALUES (?)", test_user_id)
 db.commit()
@@ -71,14 +72,14 @@ def recommend(user_id):
         abort(404)
     return users[user_id].recommend()
 
-@app.route('/<user_id>/purchase/<cost>')
-def purchase(user_id,cost):
-     if user_id not in users:
+@app.route('/<user_id>/purchase', methods=['POST'])
+def purchase(user_id):
+    if user_id not in users:
         print(f'User {user_id} does not exist.')
         abort(404)
-     print("Purchase!")
-     print(cost)
-     return users[user_id].purchase(Consumable("dog food",0,0,10))
+    print("Purchase!")
+    item_id = request.json.get('item_id')
+    return users[user_id].purchase(item_id)
 
 if __name__ == '__main__':
     app.run()
