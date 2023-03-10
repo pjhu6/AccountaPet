@@ -16,49 +16,5 @@
         <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
     </div>
     <h1>Shop</h1>
-    <p style = "font-size:x-large"> Welcome to the pet shop! Here are the items for sale:</p>
-    <p id="points"> Balance: ${{user.getPoints()}}</p>
-    
-    <p>Dog food: $10</p> 
-    <button onclick="buyItem('DOG_FOOD', 10)">Buy</button></li>
-    <p> Cat food: $8</p> 
-    <button onclick="buyItem('CAT_FOOD', 8)">Buy</button></li>
-    <p>Hamster wheel: $5</p> 
-    <button onclick="buyItem('H_WHEEL', 5)">Buy</button></li></li>
-    <p>Fish tank: $15</p> 
-    <button onclick="buyItem('F_TANK', 15)">Buy</button></li></li>
-    
-    <script>
-        
-        function buyItem(itemId, itemPrice) {
-        const userPoints = {{user.points}};
-        if (userPoints < itemPrice) {
-            // Display error message
-            alert(`You do not have enough points to buy ${itemId}.`);
-            return;
-        }
-
-        // Make a purchase
-        fetch('/{{user.user_id}}/purchase', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'item_id': itemId,
-                'item_price': itemPrice
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const userPointsElement = document.getElementById("points");
-            userPointsElement.textContent = `Balance: $${data.points}`;
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    }
-    </script>
 </body>
 </html>
-

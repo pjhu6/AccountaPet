@@ -17,33 +17,5 @@
     </div>
     
     <h1>Pet Status</h1>
-    <p>Here's the status of your pet:</p>
-    <ul>
-        <li>Name: {{user.pet.name}}</li>
-        <li>Species: {{user.pet.species}}</li>
-        <li id="hunger">Hunger: {{user.pet.hunger}}</li>
-        <li id="happiness">Happiness: {{user.pet.happiness}}</li>
-        <li>Age: {{user.pet.getAge()}}</li>
-    </ul>
-    <button onclick="feedPet()">Feed Pet</button>
-
-    <script>
-    function feedPet() {
-        /* TODO actually implement user endpoints */
-        fetch('/{{user.user_id}}/feed')
-            .then(response => response.json())
-            .then(data => {
-                const hungerElement = document.getElementById("hunger");
-                hungerElement.textContent = `Hunger: ${data.hunger}`;
-
-                const happinessElement = document.getElementById("happiness");
-                happinessElement.textContent = `Happiness: ${data.happiness}`;
-            })
-            .catch(error => {
-            console.error(error);
-            });
-    }
-    </script>
 </body>
 </html>
-

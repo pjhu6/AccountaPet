@@ -16,43 +16,5 @@
         <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
     </div>
     <h1>Settings</h1>
-    <p>Here are your current settings:</p>
-    <ul>
-        <li>Sound: 
-            <label class="toggle-switch">
-                <input type="checkbox" id="sound-toggle" />
-                <span class="switch"></span>
-            </label>
-        </li>
-        <li>Notifications:
-            <label class="toggle-switch">
-                <input type="checkbox" id="notification-toggle" />
-                <span class="switch"></span>
-            </label>
-        </li>
-        <li>Language: 
-            <div class="language-dropdown">
-                <button class="language-dropdown-toggle">Select Language</button>
-                <ul class="language-dropdown-menu">
-                  <li><a href="#" class="language-dropdown-item">English</a></li>
-                  <li><a href="#" class="language-dropdown-item">Spanish</a></li>
-                  <li><a href="#" class="language-dropdown-item">French</a></li>
-                  <li><a href="#" class="language-dropdown-item">German</a></li>
-                </ul>
-            </div>
-            <script>
-                const toggleButton = document.querySelector('.language-dropdown-toggle');
-                const menuItems = document.querySelectorAll('.language-dropdown-item');
-              
-                menuItems.forEach(item => {
-                  item.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    toggleButton.textContent = event.target.textContent;
-                  });
-                });
-            </script>
-        </li>
-    </ul>
 </body>
 </html>
-
