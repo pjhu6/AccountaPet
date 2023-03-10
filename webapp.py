@@ -1,85 +1,48 @@
-from flask import Flask, abort, render_template, request
-from virtual_pet import VirtualPet
+from flask import Flask, abort, render_template, request, redirect, url_for
 import os
-from consumable import Consumable
-from user import User
-import db
+import sqlite3
 
 app = Flask(__name__)
 
-# TODO: implement users
-users = {}
+# connect to the database
+conn = sqlite3.connect('db/accountapet.db')
+c = conn.cursor()
 
-### TEST USER REMOVE LATER ###
-test_user_id = 'bobjoe123'
-db.execute("DROP TABLE IF EXISTS users") # remove these later
-db.execute("DROP TABLE IF EXISTS user_consumables")
-db.execute("DROP TABLE IF EXISTS all_consumables")
-db.execute("DROP TABLE IF EXISTS pets")
-db.build()
+# create a table for users if it does not exist
+c.execute('''
+CREATE TABLE IF NOT EXISTS users (
+    user_id TEXT PRIMARY KEY,
+    user_name TEXT,
+    wallet INTEGER DEFAULT 0,
+    pet_health INTEGER DEFAULT 100,
+    pet_status_id INTEGER DEFAULT 0,
+    FOREIGN KEY (pet_status_id) REFERENCES pet_status(pet_status_id)
+)
+''')
 
-
-'''user_file = f'{test_user_id}.json'
-if os.path.isfile(user_file):
-    users[test_user_id] = User.from_json(user_file)
-else:'''
-users[test_user_id] = User(test_user_id, points = 500, pet = VirtualPet("Fluffy II", "cat", 5))
-
-db.execute("INSERT INTO users (user_id) VALUES (?)", test_user_id)
-db.commit()
-test_pet_data = db.record("SELECT pet_name, species FROM pets WHERE user_id = ?", test_user_id)
-print(f"[{test_user_id}] has a [{test_pet_data[1]}] named [{test_pet_data[0]}]")
-
-### TEST USER REMOVE LATER ###
+# close the database connection
+conn.close()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 @app.route('/home')
 def home():
-    return render_template('home.html', user=users['bobjoe123'])
+    return render_template('home.html')
 
 @app.route('/shop')
 def shop():
-    return render_template('shop.html', user=users['bobjoe123'])
+    return render_template('shop.html')
 
 @app.route('/pet_status')
 def pet_status():
-    # TODO make these dynamic urls with user_id, don't hardcode pet
-    return render_template('pet_status.html', user=users['bobjoe123'])
+
+    return render_template('pet_status.html')
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html', user=users['bobjoe123'])
-
-
-# User actions
-
-@app.route('/<user_id>/feed')
-def feed(user_id):
-    # TODO replace with consumable of user's choice
-    if user_id not in users:
-        print(f'User {user_id} does not exist.')
-        abort(404)
-    print(f"User {user_id} is feeding their pet named {users[user_id].pet.name}")
-    return users[user_id].feed(Consumable("dog food", 1, 1))
-
-@app.route('/<user_id>/recomend')
-def recommend(user_id):
-    if user_id not in users:
-        print(f'User {user_id} does not exist.')
-        abort(404)
-    return users[user_id].recommend()
-
-@app.route('/<user_id>/purchase', methods=['POST'])
-def purchase(user_id):
-    if user_id not in users:
-        print(f'User {user_id} does not exist.')
-        abort(404)
-    print("Purchase!")
-    item_id = request.json.get('item_id')
-    return users[user_id].purchase(item_id)
+    return render_template('settings.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5000, debug=True)
