@@ -8,18 +8,6 @@ app = Flask(__name__)
 conn = sqlite3.connect('db/accountapet.db')
 c = conn.cursor()
 
-# create a table for users if it does not exist
-c.execute('''
-CREATE TABLE IF NOT EXISTS users (
-    user_id TEXT PRIMARY KEY,
-    user_name TEXT,
-    wallet INTEGER DEFAULT 0,
-    pet_health INTEGER DEFAULT 100,
-    pet_status_id INTEGER DEFAULT 0,
-    FOREIGN KEY (pet_status_id) REFERENCES pet_status(pet_status_id)
-)
-''')
-
 # close the database connection
 conn.close()
 

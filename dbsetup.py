@@ -4,18 +4,18 @@ import sqlite3
 conn = sqlite3.connect('./db/accountapet.db')
 
 # create user table
-conn.execute('''CREATE TABLE user
-                 (user_id INTEGER PRIMARY KEY,
+conn.execute('''CREATE TABLE users
+                 (user_id TEXT PRIMARY KEY,
                   user_name TEXT NOT NULL,
-                  wallet INTEGER,
-                  pet_health INTEGER,
-                  pet_status_id INTEGER,
+                  wallet INTEGER DEFAULT 0,
+                  pet_health INTEGER DEFAULT 100,
+                  pet_status_id INTEGER DEFAULT 0,
                   FOREIGN KEY (pet_status_id) REFERENCES pet_status(pet_status_id));''')
 
 # create goal table
 conn.execute('''CREATE TABLE goal
                  (goal_id INTEGER PRIMARY KEY,
-                  user_id INTEGER,
+                  user_id TEXT,
                   goal_description TEXT,
                   time_remaining INTEGER,
                   FOREIGN KEY (user_id) REFERENCES user(user_id));''')
@@ -29,7 +29,7 @@ conn.execute('''CREATE TABLE pet_shop
 
 # create inventory table
 conn.execute('''CREATE TABLE inventory
-                 (user_id INTEGER,
+                 (user_id TEXT,
                   item_id INTEGER,
                   item_name TEXT,
                   effect INTEGER,
