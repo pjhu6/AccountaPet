@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#clear current user table
+python clearcurrentuser.py
+
 # Start home.py on port 5001
 python home.py 5001 &
 

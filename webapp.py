@@ -1,27 +1,9 @@
-from flask import Flask, abort, render_template, request, redirect, url_for
+from flask import Flask, abort, render_template, request, redirect, url_for, session
 import os
 import sqlite3
 
 app = Flask(__name__)
-
-# connect to the database
-conn = sqlite3.connect('db/accountapet.db')
-c = conn.cursor()
-
-# create a table for users if it does not exist
-c.execute('''
-CREATE TABLE IF NOT EXISTS users (
-    user_id TEXT PRIMARY KEY,
-    user_name TEXT,
-    wallet INTEGER DEFAULT 0,
-    pet_health INTEGER DEFAULT 100,
-    pet_status_id INTEGER DEFAULT 0,
-    FOREIGN KEY (pet_status_id) REFERENCES pet_status(pet_status_id)
-)
-''')
-
-# close the database connection
-conn.close()
+app.secret_key = 'webapp_secret_key'
 
 @app.route('/')
 def index():
@@ -29,7 +11,24 @@ def index():
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    conn = sqlite3.connect('db/accountapet.db')
+    c = conn.cursor()
+    # Retrieve the current user's name and id from the current_user table
+    c.execute("SELECT user_name, user_id FROM current_user")
+    result = c.fetchone()
+    user_name, user_id = result[0], result[1] if result else ('', '')
+    
+    # Retrieve all goals for the current user
+    c.execute("SELECT goal_id, goal_description, time_remaining FROM goal WHERE user_id=?", (user_id,))
+    goals = c.fetchall()
+
+    c.close()
+    conn.close()
+
+    print("Webapp username: " + user_name)
+
+    return render_template('home.html', user_name=user_name, goals=goals)
+
 
 @app.route('/shop')
 def shop():
