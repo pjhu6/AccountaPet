@@ -13,14 +13,21 @@ def index():
 def home():
     conn = sqlite3.connect('db/accountapet.db')
     c = conn.cursor()
-    # Retrieve the current user's name from the current_user table
-    c.execute("SELECT user_name FROM current_user")
+    # Retrieve the current user's name and id from the current_user table
+    c.execute("SELECT user_name, user_id FROM current_user")
     result = c.fetchone()
-    user_name = result[0] if result else ''
+    user_name, user_id = result[0], result[1] if result else ('', '')
+    
+    # Retrieve all goals for the current user
+    c.execute("SELECT goal_id, goal_description, time_remaining FROM goal WHERE user_id=?", (user_id,))
+    goals = c.fetchall()
+
     c.close()
     conn.close()
+
     print("Webapp username: " + user_name)
-    return render_template('home.html', user_name=user_name)
+
+    return render_template('home.html', user_name=user_name, goals=goals)
 
 
 @app.route('/shop')

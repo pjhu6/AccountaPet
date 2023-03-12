@@ -30,6 +30,16 @@
                 <button type="submit">Add Goal</button>
             </form>
         </div>
+
+        {% if goals %}
+        <div class="goals">
+            <ul>
+            {% for goal in goals %}
+                <li>{{ goal[1] }} ({{ goal[2] }} days remaining)</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>
