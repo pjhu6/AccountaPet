@@ -19,8 +19,17 @@
    
     <div class="content">
         <h1>Home</h1>
-       
+        <h2>Hi {{ user_name }}, these are your goals:</h2>
+
+        <div class="form">
+            <h2>Add Goal</h2>
+            <form action="http://127.0.0.1:5001/home" method="POST">
+                <input type="text" placeholder="Goal Description" name="goal_description" required>
+                <input type="number" placeholder="Time Remaining" name="time_remaining" required>
+                <input type="hidden" name="action" value="add_goal">
+                <button type="submit">Add Goal</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
-

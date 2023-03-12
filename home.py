@@ -1,8 +1,9 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key = 'home_secret_key'
 CORS(app, resources={r"/*": {"origins": ["http://localhost"]}})
 
 @app.route('/home', methods=['POST'])
@@ -39,6 +40,24 @@ def handle_home_request():
             print(status_code)
             #user ID already in use
             return render_template('login.html', message_register=response)
+
+    elif action == 'add_goal':
+        print(action)
+        print(request.form['goal_description'])
+        print(request.form['time_remaining'])
+
+        data = request.form
+        response, status_code = add_goal(data)
+
+        if status_code == 200:
+            print(status_code)
+            #successful goal add
+            return redirect('http://127.0.0.1:5000/home')
+        elif status_code == 400:
+            print(status_code)
+            #failed goal add
+            return render_template('home.html', user_name=session['user_name'], message=response)
+
     else:
         return 'Invalid action'
 
@@ -55,6 +74,14 @@ def check_login(data):
     conn.close()
 
     if user:
+        #save user_id and associated user_name from user table into current user table
+        conn = sqlite3.connect('db/accountapet.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO current_user (user_id, user_name) VALUES (?, ?)", (user_id, user[1]))
+        conn.commit()
+        c.close()
+        conn.close()
+    
         return 'User found', 200
     else:
         return 'Invalid User ID', 404
@@ -83,13 +110,47 @@ def create_user(data):
               (user_id, user_name, wallet, pet_health, pet_status_id))
     conn.commit()
 
+    #save user_id and user_name into current user table
+    c.execute("INSERT INTO current_user (user_id, user_name) VALUES (?, ?)", (user_id, user_name))
+    conn.commit()
+
     c.close()
     conn.close()
 
     return 'User created', 201
 
+def add_goal(data):
+    conn = sqlite3.connect('db/accountapet.db')
+    c = conn.cursor()
+
+    #Retrieve user_id from current_user table
+    c.execute("SELECT user_id FROM current_user")
+    user_id = c.fetchone()[0]
+
+    #Get the maximum goal_id value from the goal table and add 1 to get the next goal_id
+    c.execute("SELECT MAX(goal_id) FROM goal")
+    goal_id = c.fetchone()[0]
+    if goal_id is None:
+        goal_id = 0
+    else:
+        goal_id += 1
+
+    #Insert new goal record into goal table
+    goal_description = data['goal_description']
+    try:
+        time_remaining = int(data['time_remaining'])
+    except ValueError:
+        return 'Invalid time remaining', 400
 
 
+    c.execute("INSERT INTO goal (goal_id, user_id, goal_description, time_remaining) VALUES (?, ?, ?, ?)",
+              (goal_id, user_id, goal_description, time_remaining))
+    conn.commit()
+
+    c.close()
+    conn.close()
+
+    return 'Goal successfully added', 200
 
 
 
