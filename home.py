@@ -57,9 +57,49 @@ def handle_home_request():
             print(status_code)
             #failed goal add
             return render_template('home.html', user_name=session['user_name'], message=response)
+    elif action == 'remove_goal':
+        print(action)
+        print(request.form['goal_id'])
+
+        data = request.form
+        response, status_code = remove_goal(data)
+
+        if status_code == 200:
+            print(status_code)
+            #removed goal successfully
+            return redirect('http://127.0.0.1:5000/home')
+        elif status_code == 400:
+            print(status_code)
+            #failed goal removal
+            return render_template('home.html', user_name=session['user_name'], message=response)
+
 
     else:
         return 'Invalid action'
+
+def remove_goal(data):
+    conn = sqlite3.connect('db/accountapet.db')
+    c = conn.cursor()
+
+    #Get the user_id of the current user
+    c.execute("SELECT user_id FROM current_user")
+    user_id = c.fetchone()[0]
+
+    #Get the goal_id from the POST request
+    goal_id = data['goal_id']
+
+    #Delete the goal from the goal table with the given goal_id and user_id
+    c.execute("DELETE FROM goal WHERE goal_id=? AND user_id=?", (goal_id, user_id))
+
+    # Increase user's wallet by 5
+    c.execute("UPDATE users SET wallet = wallet + 5 WHERE user_id = ?", (user_id,))
+    conn.commit()
+
+    c.close()
+    conn.close()
+
+    return 'Goal successfully removed', 200
+
 
 
 def check_login(data):
@@ -151,6 +191,7 @@ def add_goal(data):
     conn.close()
 
     return 'Goal successfully added', 200
+
 
 
 
