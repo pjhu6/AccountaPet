@@ -61,7 +61,7 @@
                     <td>{{ item[1] }}</td>
                     <td>{{ item[2] }}</td>
                     <td>
-                      <form action="{{ url_for('shop') }}" method="POST">
+                      <form action="http://127.0.0.1:5002/shop" method="POST">
                         <input type="hidden" name="action" value="buy">
                         <input type="hidden" name="item_id" value="{{ item[0] }}">
                         <button type="submit">Buy</button>
