@@ -32,6 +32,7 @@ conn.execute('''CREATE TABLE inventory
                 (user_id TEXT,
                 item_id INTEGER,
                 item_name TEXT,
+                item_amount INTEGER,
                 effect INTEGER,
                 FOREIGN KEY (user_id) REFERENCES user(user_id),
                 FOREIGN KEY (item_id) REFERENCES pet_shop(item_id));''')

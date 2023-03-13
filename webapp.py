@@ -36,7 +36,20 @@ def home():
 
 @app.route('/shop')
 def shop():
-    return render_template('shop.html')
+    conn = sqlite3.connect('db/accountapet.db')
+    c = conn.cursor()
+    #Retrieve the current user's name and id from the current_user table
+    c.execute("SELECT user_name, user_id FROM current_user")
+    result = c.fetchone()
+    user_name, user_id = result[0], result[1] if result else ('', '')
+
+    #Retrieve the current user's wallet balance from the user table
+    c.execute("SELECT wallet FROM users WHERE user_id=?", (user_id,))
+    result = c.fetchone()
+    wallet = result[0] if result else 0
+    c.close()
+    conn.close()
+    return render_template('shop.html', wallet=wallet)
 
 @app.route('/pet_status')
 def pet_status():
