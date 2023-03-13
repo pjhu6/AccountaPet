@@ -2,7 +2,7 @@ from flask import Flask, abort, render_template, request, redirect, url_for, ses
 import os
 import sqlite3
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static/')
 app.secret_key = 'webapp_secret_key'
 
 @app.route('/')
@@ -47,9 +47,18 @@ def shop():
     c.execute("SELECT wallet FROM users WHERE user_id=?", (user_id,))
     result = c.fetchone()
     wallet = result[0] if result else 0
+
+    #Retrieve the current user's inventory from the inventory table based on current user_id
+    c.execute("SELECT item_id, item_name, item_amount, effect FROM inventory WHERE user_id=?", (user_id,))
+    user_inventory = c.fetchall()
+
+    #Retrieve all items listed in pet shop table
+    c.execute("SELECT item_id, item_name, cost, effect FROM pet_shop")
+    pet_shop_items = c.fetchall()
+
     c.close()
     conn.close()
-    return render_template('shop.html', wallet=wallet)
+    return render_template('shop.html', user_name=user_name, wallet=wallet, user_inventory=user_inventory, pet_shop_items=pet_shop_items)
 
 @app.route('/pet_status')
 def pet_status():

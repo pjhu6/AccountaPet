@@ -22,7 +22,7 @@ conn.execute('''CREATE TABLE goal
 
 # create pet shop table
 conn.execute('''CREATE TABLE pet_shop
-                (item_id INTEGER PRIMARY KEY,
+                (item_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 item_name TEXT,
                 cost INTEGER,
                 effect INTEGER);''')

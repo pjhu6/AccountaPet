@@ -17,5 +17,63 @@
     </div>
     <h1>Happy Tails Pet Shop</h1>
     <p class="wallet">Balance: ${{ wallet }}</p>
+
+    <div class="content">
+        <div class="table-container">
+          <div class="column table">
+            <h2>Inventory</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if user_inventory %}
+                  {% for item in user_inventory %}
+                    <tr>
+                      <td>{{ item[1] }}</td>
+                      <td>{{ item[2] }}</td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="2">No items in inventory</td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+          <div class="column table">
+            <h2>Products</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Cost</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in pet_shop_items %}
+                  <tr>
+                    <td>{{ item[1] }}</td>
+                    <td>{{ item[2] }}</td>
+                    <td>
+                      <form action="{{ url_for('shop') }}" method="POST">
+                        <input type="hidden" name="action" value="buy">
+                        <input type="hidden" name="item_id" value="{{ item[0] }}">
+                        <button type="submit">Buy</button>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+      
 </body>
 </html>
