@@ -4,3 +4,4 @@
 pkill -f "webapp.py"
 pkill -f "home.py"
 pkill -f "shop.py"
+pkill -f "settings.py"

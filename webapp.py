@@ -7,6 +7,17 @@ app.secret_key = 'webapp_secret_key'
 
 @app.route('/')
 def index():
+
+    #clear current user whenever this page is loaded
+    conn = sqlite3.connect('db/accountapet.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM current_user")
+    rows_deleted = c.rowcount
+    print(f"{rows_deleted} rows deleted from current_user table.")
+    conn.commit()
+    c.close()
+    conn.close()
+    
     return render_template('login.html')
 
 @app.route('/home')
