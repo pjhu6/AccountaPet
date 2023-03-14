@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    
 </head>
 <body >
     <div class="nav">
@@ -16,11 +15,12 @@
         <button class="button-nav"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
         <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
     </div>
-   
-    <div class="content">
-        <h1>Home</h1>
-        <h2>Hi {{ user_name }}, these are your goals:</h2>
 
+    <div class="content">
+        <div class="header-container">
+            <h2>Hi {{ user_name }}, these are your goals:</h2>
+            <p class="wallet">Balance: ${{ wallet }}</p>
+        </div>
         <div class="form">
             <h2>Add Goal</h2>
             <form action="http://127.0.0.1:5001/home" method="POST">
@@ -33,11 +33,24 @@
 
         {% if goals %}
         <div class="goals">
-            <ul>
+            <table>
+                <tr>
+                    <th>Goal</th>
+                    <th>Time Remaining</th>
+                    <th>Actions</th>
+                </tr>
             {% for goal in goals %}
-                <li>{{ goal[1] }} ({{ goal[2] }} days remaining)</li>
+                <tr>
+                    <td>{{ goal[1] }}</td>
+                    <td>{{ goal[2] }} days</td>
+                    <td><form action="http://127.0.0.1:5001/home" method="POST">
+                        <input type="hidden" name="action" value="remove_goal">
+                        <input type="hidden" name="goal_id" value="{{ goal[0] }}">
+                        <button type="submit">Complete</button>
+                    </form></td>
+                </tr>
             {% endfor %}
-            </ul>
+            </table>
         </div>
         {% endif %}
     </div>

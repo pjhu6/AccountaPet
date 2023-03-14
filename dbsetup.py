@@ -24,7 +24,7 @@ conn.execute('''CREATE TABLE IF NOT EXISTS goal
 
 # create pet shop table
 conn.execute('''CREATE TABLE IF NOT EXISTS pet_shop
-                (item_id INTEGER PRIMARY KEY,
+                (item_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 item_name TEXT,
                 cost INTEGER,
                 effect INTEGER);''')
@@ -34,6 +34,7 @@ conn.execute('''CREATE TABLE IF NOT EXISTS inventory
                 (user_id TEXT,
                 item_id INTEGER,
                 item_name TEXT,
+                item_amount INTEGER,
                 effect INTEGER,
                 FOREIGN KEY (user_id) REFERENCES user(user_id),
                 FOREIGN KEY (item_id) REFERENCES pet_shop(item_id));''')
