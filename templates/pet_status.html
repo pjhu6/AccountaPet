@@ -16,23 +16,29 @@
         <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
     </div>
     <div class="content">
-        <img id="pet-image" src="">
-        <div class="info">
-            <p id="status"></p>
-            <p id="health"></p>
-        </div>
-        <div class="actions">
-            <h2 id="inventory">Inventory</h2>
-            <ul id="item-list">
-            </ul>
-        </div>
-        <div class="recommendations">
-            <h2 id="reco-actions">Recommended Actions</h2>
-        </div>
+        <div class="table-container">
+            <div class="column table">
+                <img id="pet-image" src="">
+                <div class="info">
+                    <p id="status"></p>
+                    <p id="health"></p>
+                </div>
+                <div class="actions">
+                    <h2 id="inventory">Inventory</h2>
+                    <ul id="item-list">
+                    </ul>
+                </div>
+            </div>
+            <div class="column table">
+                <div class="recommendations">
+                    <h2 id="reco-actions">Recommended Actions</h2>
+                </div>
+            </div>
+        </div>  
         <script>
             function updateStatus() {
                 console.log('update status')
-                fetch('http://127.0.0.1:5003/status', {
+                fetch('http://127.0.0.1:5004/status', {
                     method: "GET"
                     })
                     .then(response => response.json())
@@ -48,7 +54,7 @@
             function useItem(item) {
                 const body = new FormData();
                 body.append('item_id', item.item_id);
-                fetch('http://127.0.0.1:5003/status', {
+                fetch('http://127.0.0.1:5004/status', {
                     method: "POST",
                     body: body
                     })
@@ -70,6 +76,7 @@
                     // Create button for each text element
                     var button = document.createElement("button");
                     button.textContent = "Use";
+                    button.type = "submit";
                     button.onclick = function() {
                         useItem(item);
                     };

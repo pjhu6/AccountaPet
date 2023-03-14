@@ -9,6 +9,9 @@ python home.py 5001 &
 #Start shop.py on port 5002
 python shop.py 5002 &
 
+#Start settings.py on port 5004
+python pet_status.py 5004 &
+
 #Start settings.py on port 5003
 python settings.py 5003 &
 
