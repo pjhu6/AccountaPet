@@ -1,17 +1,10 @@
-# pip install geopy
+# pip install geocoder
 
-from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
+import geocoder
 
 def get_location():
-    geolocator = Nominatim(user_agent="geoapiExercises")
-    try:
-        # Get current location using geolocation service
-        location = geolocator.geocode("me", timeout=10)
-        return location.latitude, location.longitude
-    except GeocoderTimedOut as e:
-        print("Error: geocode service is not available at the moment.")
-        return None
+    g = geocoder.ip('me')
+    return g.latlng
 
 if __name__ == '__main__':
     latitude, longitude = get_location()
