@@ -24,10 +24,15 @@ def index():
 def home():
     conn = sqlite3.connect('db/accountapet.db')
     c = conn.cursor()
+
     #Retrieve the current user's name and id from the current_user table
     c.execute("SELECT user_name, user_id FROM current_user")
     result = c.fetchone()
-    user_name, user_id = result[0], result[1] if result else ('', '')
+    if result is None:
+        return render_template('login.html')
+    else:
+        user_name, user_id = result[0], result[1]
+
     
     #Retrieve all goals for the current user
     c.execute("SELECT goal_id, goal_description, time_remaining FROM goal WHERE user_id=?", (user_id,))
@@ -52,7 +57,10 @@ def shop():
     #Retrieve the current user's name and id from the current_user table
     c.execute("SELECT user_name, user_id FROM current_user")
     result = c.fetchone()
-    user_name, user_id = result[0], result[1] if result else ('', '')
+    if result is None:
+        return render_template('login.html')
+    else:
+        user_name, user_id = result[0], result[1]
 
     #Retrieve the current user's wallet balance from the user table
     c.execute("SELECT wallet FROM users WHERE user_id=?", (user_id,))
