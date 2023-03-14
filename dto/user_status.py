@@ -29,12 +29,14 @@ class PetStatus:
         }
     
 class Item:
-    def __init__(self, item_id, item_name):
+    def __init__(self, item_id, item_name, item_amount):
         self.item_id = item_id
         self.item_name = item_name
+        self.item_amount = item_amount
 
     def to_dict(self):
         return {
             'item_id': self.item_id,
-            'item_name': self.item_name
+            'item_name': self.item_name,
+            'item_amount': self.item_amount
         }

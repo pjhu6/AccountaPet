@@ -71,7 +71,7 @@
                 // Add each item to the inventory list
                 items.forEach(function(item) {
                     var li = document.createElement('li');
-                    li.textContent = item.item_name;
+                    li.textContent = item.item_name + " (" + item.item_amount + ")";
 
                     // Create button for each text element
                     var button = document.createElement("button");
