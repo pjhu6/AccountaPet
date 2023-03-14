@@ -15,7 +15,80 @@
         <button class="button-nav"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
         <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
     </div>
-    
-    <h1>Pet Status</h1>
+    <div class="content">
+        <div class="table-container">
+            <div class="column table">
+                <img id="pet-image" src="">
+                <div class="info">
+                    <p id="status"></p>
+                    <p id="health"></p>
+                </div>
+                <div class="actions">
+                    <h2 id="inventory">Inventory</h2>
+                    <ul id="item-list">
+                    </ul>
+                </div>
+            </div>
+            <div class="column table">
+                <div class="recommendations">
+                    <h2 id="reco-actions">Recommended Actions</h2>
+                </div>
+            </div>
+        </div>  
+        <script>
+            function updateStatus() {
+                console.log('update status')
+                fetch('http://127.0.0.1:5004/status', {
+                    method: "GET"
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("status").textContent = "Pet Status: " + data.pet_status.status_name;
+                        document.getElementById("health").textContent = "Pet Health: " + data.pet_status.pet_health + "/100";
+                        document.getElementById("pet-image").src = "{{ url_for('static', filename='images/') }}" + data.pet_status.img_name;
+                        updateItemList(data.items)
+                    })
+                    .catch(error => console.error(error));
+            }
+
+            function useItem(item) {
+                const body = new FormData();
+                body.append('item_id', item.item_id);
+                fetch('http://127.0.0.1:5004/status', {
+                    method: "POST",
+                    body: body
+                    })
+                    .then(
+                        updateStatus()
+                    )
+                    .catch(error => console.error(error));
+            }
+                
+            function updateItemList(items) {
+                var itemList = document.getElementById('item-list');
+                itemList.innerHTML = '';
+
+                // Add each item to the inventory list
+                items.forEach(function(item) {
+                    var li = document.createElement('li');
+                    li.textContent = item.item_name + " (" + item.item_amount + ")";
+
+                    // Create button for each text element
+                    var button = document.createElement("button");
+                    button.textContent = "Use";
+                    button.type = "submit";
+                    button.onclick = function() {
+                        useItem(item);
+                    };
+                    li.appendChild(button);
+
+                    itemList.appendChild(li);
+                });
+            }
+
+            updateStatus();
+            setInterval(updateStatus, 300000); // 5 minutes
+        </script>
+    </div>
 </body>
 </html>

@@ -1,5 +1,4 @@
-from flask import Flask, abort, render_template, request, redirect, url_for, session
-import os
+from flask import Flask, render_template
 import sqlite3
 
 app = Flask(__name__, static_folder='static/')
@@ -81,7 +80,6 @@ def shop():
 
 @app.route('/pet_status')
 def pet_status():
-
     return render_template('pet_status.html')
 
 @app.route('/settings')
