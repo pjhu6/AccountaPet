@@ -1,5 +1,6 @@
 import requests
 import location
+import datetime
 
 condition_dict = {
     200: {'main': 'Thunderstorm', 'description': 'thunderstorm with light rain', 'icon': '11d'},
@@ -65,6 +66,53 @@ condition_dict = {
     804: {'main': 'Clouds', 'description': 'overcast clouds: 85-100%', 'icon': '04d'},
 }
 
+'''
+{
+    'coord': {
+        'lon': -117.6031, 
+        'lat': 33.6409
+    }, 
+    'weather': [
+        {
+            'id': 804, 
+            'main': 'Clouds', 
+            'description': 'overcast clouds', 
+            'icon': '04d'
+        }
+    ], 
+    'base': 'stations', 
+    'main': {
+        'temp': 56.59, 
+        'feels_like': 56.26, 
+        'temp_min': 54.57, 
+        'temp_max': 58.8, 
+        'pressure': 1016, 
+        'humidity': 92
+    }, 
+    'visibility': 10000, 
+    'wind': {
+        'speed': 8.01, 
+        'deg': 114, 
+        'gust': 11.99
+    }, 
+    'clouds': {
+        'all': 100
+    }, 
+    'dt': 1678836568, 
+    'sys': {
+        'type': 2, 
+        'id': 2079737, 
+        'country': 'US', 
+        'sunrise': 1678802546, 
+        'sunset': 1678845419
+    }, 
+    'timezone': -25200, 
+    'id': 5386082, 
+    'name': 'Rancho Santa Margarita', 
+    'cod': 200
+}
+'''
+
 def get_weather():
     url = 'https://api.openweathermap.org/data/2.5/weather'
     api_key = 'cfe3a601fe0d5d42fdd017500bcef2df'
@@ -74,8 +122,13 @@ def get_weather():
     response = requests.get(url, params=params)
 
     data = response.json()
-    for field in data:
-        print(f"{field}: {data[field]}")
+
+    print(data)
+    return data['dt'], data['weather']
+    
 
 if __name__ == '__main__':
-    get_weather()
+    time, weather = get_weather()
+    date_time = datetime.datetime.fromtimestamp(time)
+    print(date_time.strftime("%Y-%m-%d %H:%M:%S"))
+    print(weather)
