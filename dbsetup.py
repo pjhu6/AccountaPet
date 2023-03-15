@@ -27,7 +27,14 @@ conn.execute('''CREATE TABLE IF NOT EXISTS pet_shop
                 (item_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 item_name TEXT,
                 cost INTEGER,
-                effect INTEGER);''')
+                effect INTEGER,
+                weather_2xx REAL,
+                weather_3xx REAL,
+                weather_5xx REAL,
+                weather_6xx REAL,
+                weather_7xx REAL,
+                weather_8xx REAL,
+                ideal_time INTEGER);''')
 
 # create inventory table
 conn.execute('''CREATE TABLE IF NOT EXISTS inventory

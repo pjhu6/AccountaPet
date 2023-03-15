@@ -123,7 +123,6 @@ def get_weather():
 
     data = response.json()
 
-    print(data)
     return data['dt'], data['weather']
     
 
