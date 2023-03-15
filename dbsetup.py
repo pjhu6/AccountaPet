@@ -41,7 +41,7 @@ conn.execute('''CREATE TABLE IF NOT EXISTS inventory
 
 # create pet status table
 conn.execute('''CREATE TABLE IF NOT EXISTS pet_status
-                (pet_status_id INTEGER PRIMARY KEY,
+                (pet_status_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 pet_status_name TEXT,
                 effect INTEGER);''')
 
