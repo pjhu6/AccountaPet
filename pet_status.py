@@ -31,12 +31,15 @@ def get_current_status():
         return {}
     print(f'{user_id}\'s pet status: {status_info}')
 
-    # TODO: Update user's pet status in db according to context filtering, i.e. location, weather, time
-    # Add user last login field to db
+    # Change status if a day has passed since last update
     last_updated = datetime.datetime.strptime(status_info[7], '%Y-%m-%d')
-    now = datetime.datetime.now()
-    if now - last_updated >= datetime.timedelta(days=1):
-        print("OVER 1 DAY!!!")
+    today = datetime.datetime.today()
+    if today - last_updated >= datetime.timedelta(days=1):
+        c.execute('SELECT pet_status_id FROM pet_status ORDER BY RANDOM() LIMIT 1')
+        new_status_id = c.fetchone()[0]
+        c('UPDATE users SET pet_status_id = ? WHERE user_id = ?', (new_status_id, user_id))
+    # Set last updated to now
+    c.execute("UPDATE users SET last_updated = ? WHERE user_id = ?", (today, user_id))
 
     # Get user's inventory
     c.execute('''SELECT item_id, item_name, item_amount
@@ -44,9 +47,6 @@ def get_current_status():
                 WHERE user_id = ?;''',
                 (user_id,))
     inventory = c.fetchall()
-
-    # Set last updated to now
-    c.execute("UPDATE users SET last_updated = ? WHERE user_id = ?", (now.date(), user_id))
 
     c.close()
     conn.close()
