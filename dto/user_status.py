@@ -1,14 +1,14 @@
 class UserStatus:
-    def __init__(self, pet_status, items): #, recommendations=[]):
+    def __init__(self, pet_status, items, recommendations):
         self.pet_status = pet_status
         self.items = items
-        # self.recommendations = recommendations
+        self.recommendations = recommendations
 
     def to_dict(self):
         return {
             'pet_status': self.pet_status.to_dict(),
             'items': [item.to_dict() for item in self.items],
-            # 'recommendations': self.recommendations
+            'recommendations': [reco_item.to_dict() for reco_item in self.recommendations]
         }
 
 class PetStatus:

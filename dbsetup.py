@@ -3,14 +3,16 @@ import sqlite3
 # create connection to database
 conn = sqlite3.connect('./db/accountapet.db')
 
+#conn.execute('''DROP TABLE IF EXISTS users''')
 # create user table
 conn.execute('''CREATE TABLE IF NOT EXISTS users
                 (user_id TEXT PRIMARY KEY,
                 user_name TEXT NOT NULL,
                 wallet INTEGER DEFAULT 0,
                 pet_health INTEGER DEFAULT 100,
-                pet_status_id INTEGER DEFAULT 0,
-                pet_id TEXT DEFAULT "cat1",
+                pet_status_id INTEGER DEFAULT 1,
+                pet_id TEXT DEFAULT 'cat1',
+                last_updated DATE DEFAULT (date('now')),
                 FOREIGN KEY (pet_status_id) REFERENCES pet_status(pet_status_id),
                 FOREIGN KEY (pet_id) REFERENCES pets(pet_id));''')
 

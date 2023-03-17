@@ -2,6 +2,8 @@ from flask import Flask, request, redirect, render_template, session
 from flask_cors import CORS
 import sqlite3
 from dto.user_status import PetStatus, UserStatus, Item
+import search
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'home_secret_key'
@@ -17,17 +19,24 @@ def get_current_status():
         return {}
     user_id = results[0]
 
-    # TODO: Update user's pet status in db according to context filtering, i.e. location, weather, time
-
     # Get user's pet status info from db
-    c.execute('''SELECT pets.pet_name, pets.img_name, pet_status.pet_status_name, pet_status.effect, users.pet_health, users.pet_id
+    c.execute('''SELECT pets.pet_name, pets.img_name, pet_status.pet_status_name, pet_status.effect, users.pet_health, users.pet_id, users.wallet, users.last_updated
                 FROM users
                 JOIN pet_status ON users.pet_status_id = pet_status.pet_status_id
                 JOIN pets ON users.pet_id = pets.pet_id
                 WHERE users.user_id = ?;''', 
                 (user_id,))
     status_info = c.fetchone()
+    if not status_info:
+        return {}
     print(f'{user_id}\'s pet status: {status_info}')
+
+    # TODO: Update user's pet status in db according to context filtering, i.e. location, weather, time
+    # Add user last login field to db
+    last_updated = datetime.datetime.strptime(status_info[7], '%Y-%m-%d')
+    now = datetime.datetime.now()
+    if now - last_updated >= datetime.timedelta(days=1):
+        print("OVER 1 DAY!!!")
 
     # Get user's inventory
     c.execute('''SELECT item_id, item_name, item_amount
@@ -35,18 +44,19 @@ def get_current_status():
                 WHERE user_id = ?;''',
                 (user_id,))
     inventory = c.fetchall()
+
+    # Set last updated to now
+    c.execute("UPDATE users SET last_updated = ? WHERE user_id = ?", (now.date(), user_id))
+
     c.close()
     conn.close()
-
-    if not status_info:
-        return {}
     
     # build DTOs
     pet_status = PetStatus(pet_name=status_info[0], img_name=status_info[1], status_name=status_info[2], 
                     effect_value=status_info[3], pet_health=status_info[4])
     items = [Item(entry[0], entry[1], entry[2]) for entry in inventory] if inventory else []
-    
-    return UserStatus(pet_status=pet_status, items=items).to_dict()
+    recommendations = get_recommendations(status_info[6], 10) 
+    return UserStatus(pet_status=pet_status, items=items, recommendations=recommendations).to_dict()
 
 
 @app.route('/status', methods=['POST'])
@@ -62,8 +72,8 @@ def use_item():
     item_id = request.form['item_id']
     print(f"{user_id} used item with id: {item_id}")
     
-    # Find item in inventory from item_id
-    c.execute('''SELECT item_amount, effect 
+    # Find item in inventory from item_id and decrement item amount
+    c.execute('''SELECT item_amount
               FROM inventory WHERE user_id=? AND item_id=?''',
               (user_id, item_id))
     result = c.fetchone()
@@ -74,11 +84,27 @@ def use_item():
     if item_amount > 1:
         c.execute("UPDATE inventory SET item_amount=? WHERE user_id=? AND item_id=?", (item_amount - 1, user_id, item_id))
     else:
-        print("HERE!!!")
         c.execute("DELETE FROM inventory WHERE user_id=? AND item_id=?", (user_id, item_id))
+
+    # Calculate item effect 
+    c.execute("SELECT * FROM pet_shop WHERE item_id = ?", (item_id,))
+    item_row = c.fetchone()
+    weather_id, time = search.get_weather_id_time()
+    adjusted_effect = search.calculate_adjusted_effect(item_row, weather_id=weather_id, timestamp=time)
+
+    # Apply item effect
+    pet_health = c.execute("SELECT pet_health FROM users WHERE user_id = ?", (user_id,)).fetchone()[0]
+    new_health = min(pet_health + adjusted_effect, 100)
+    c.execute("UPDATE users SET pet_health = ? WHERE user_id = ?", (new_health, user_id))
+
     conn.commit()
-    # TODO: associate item with status id?
     return {}
+
+def get_recommendations(wallet, num_items):
+    # Return list of Items
+    weather_id, time = search.get_weather_id_time()
+    sorted_shop_list = search.perform_search(wallet, weather_id=weather_id, timestamp=time)
+    return [Item(item[0], item[1], item[2]) for item in sorted_shop_list][:num_items]
 
 if __name__ == '__main__':
     app.run(port=5004)

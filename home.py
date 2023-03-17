@@ -145,7 +145,7 @@ def create_user(data):
     #otherwise proceed with creating the user along with other user fields
     wallet = 0
     pet_health = 100
-    pet_status_id = 0
+    pet_status_id = 1
     c.execute('INSERT INTO users (user_id, user_name, wallet, pet_health, pet_status_id) VALUES (?, ?, ?, ?, ?)', 
               (user_id, user_name, wallet, pet_health, pet_status_id))
     conn.commit()
