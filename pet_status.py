@@ -1,7 +1,7 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request
 from flask_cors import CORS
 import sqlite3
-from dto.user_status import PetStatus, UserStatus, Item
+from dto.user_status import PetStatus, UserStatus, Item, Recommendation
 import search
 import datetime
 
@@ -37,7 +37,7 @@ def get_current_status():
     if today - last_updated >= datetime.timedelta(days=1):
         c.execute('SELECT pet_status_id FROM pet_status ORDER BY RANDOM() LIMIT 1')
         new_status_id = c.fetchone()[0]
-        c('UPDATE users SET pet_status_id = ? WHERE user_id = ?', (new_status_id, user_id))
+        c.execute('UPDATE users SET pet_status_id = ? WHERE user_id = ?', (new_status_id, user_id))
     # Set last updated to now
     c.execute("UPDATE users SET last_updated = ? WHERE user_id = ?", (today, user_id))
 
@@ -104,7 +104,7 @@ def get_recommendations(wallet, num_items):
     # Return list of Items
     weather_id, time = search.get_weather_id_time()
     sorted_shop_list = search.perform_search(wallet, weather_id=weather_id, timestamp=time)
-    return [Item(item[0], item[1], item[2]) for item in sorted_shop_list][:num_items]
+    return [Recommendation(item[0], item[1], item[2], item[3]) for item in sorted_shop_list][:num_items]
 
 if __name__ == '__main__':
     app.run(port=5004)

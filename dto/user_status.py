@@ -40,3 +40,18 @@ class Item:
             'item_name': self.item_name,
             'item_amount': self.item_amount
         }
+    
+class Recommendation:
+    def __init__(self, item_id, item_name, cost, adjusted_effect):
+        self.item_id = item_id
+        self.item_name = item_name
+        self.cost = cost
+        self.adjusted_effect = adjusted_effect
+
+    def to_dict(self):
+        return {
+            'item_id': self.item_id,
+            'item_name': self.item_name,
+            'cost': self.cost,
+            'adjusted_effect': self.adjusted_effect
+        }

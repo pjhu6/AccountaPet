@@ -32,6 +32,7 @@
             <div class="column table">
                 <div class="recommendations">
                     <h2 id="reco-actions">Recommended Actions</h2>
+                    <p id="reco-columns">Item Name | Price | Adjusted Effect</p>
                     <ul id="reco-list">
                     </ul>
                 </div>
@@ -54,10 +55,10 @@
                         var itemList = document.getElementById('reco-list');
                         itemList.innerHTML = '';
 
-                        data.recommendations.forEach(function(item) {
+                        data.recommendations.forEach(function(reco) {
                             console.log('reco')
                             var li = document.createElement('li');
-                            li.textContent = item.item_name + " (" + item.item_amount + ")";
+                            li.textContent = reco.item_name + " | $" + reco.cost + " | " + reco.adjusted_effect;
                             itemList.appendChild(li);
                         });
                     })
