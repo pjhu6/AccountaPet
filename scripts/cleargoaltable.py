@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('db/accountapet.db')
+conn = sqlite3.connect('../db/accountapet.db')
 c = conn.cursor()
 c.execute("DELETE FROM goal")
 rows_deleted = c.rowcount
