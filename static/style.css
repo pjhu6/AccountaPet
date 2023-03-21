@@ -2,8 +2,9 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background-color: #FFE4E1;
+  background-color: #FFEEB1;
 }
+
 
 .content {
   max-width: 800px;
@@ -67,6 +68,12 @@ form button {
   border: none;
   box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
   padding: 0 10px;
+}
+
+form_list {
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
 }
 
 form button:hover {
@@ -142,4 +149,113 @@ form button:hover {
   flex: 50%;
   padding: 5px;
 }
+.pet_outer_container {
+  display: flex;  
+  flex-direction: row;
+}
+.home_menu {
+  display: flex;
+  padding: 20px;
+  vertical-align:center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pet_container {
+  display: flex;
+  border: 3px solid black;
+  border-radius: 20px;
+  background-color:#FFA1A1;
+  padding-bottom: 10px;
+  padding-top: 0px;
+  padding-right: 10px;
+  vertical-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+} 
+.home_buttons {
+    background-color:#fabebe; /*pink*/
+    border: 3px solid #191c19; /* Green */
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 24px;
+    font-family: 'Tilt Warp';
+    border-radius: 30px;
+    margin-bottom: 3px;
+    margin-top: 0px;
+}
 
+
+.pet_stats_container {
+  display: flex;
+  align-items: left;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: left;
+}
+
+.stat_text {
+  padding-left: 10px;
+}
+.pet_status_display {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  background-color:#FE7C5F; 
+  color: black;
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  text-decoration: none;
+  /*display: inline-block;*/
+  font-size: 30px;
+  font-family: 'Tilt Warp';
+  border-radius: 20px;
+  margin-bottom: 3px;
+  margin-top: 0px;
+  line-height: 10px;
+}
+
+.hp_display {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  background-color:#6ae57d; 
+  color: black;
+  padding-top: 40px;
+  text-align: center;
+  text-decoration: none;
+  /*display: inline-block;*/
+  font-size: 30px;
+  font-family: 'Tilt Warp';
+  border-radius: 20px;
+  margin-bottom: 3px;
+  margin-top: 0px;
+  line-height: 10px;
+}
+.hp_display > a { align-self: flex-end; } 
+
+.inv {
+  display: flex;
+  align-items: left;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: left;
+  padding-left: 50px;
+}
+
+.recc {
+  display: flex;
+  align-items: left;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: left;
+}
+
+a:link { text-decoration: none;color: #303030; }
+a:visited { text-decoration: none; color: #303030; }
+a:hover { text-decoration: none; color: whitesmoke;}
+a:active { text-decoration: none;color: black; }

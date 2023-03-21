@@ -9,35 +9,66 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="nav">
-        <button class="button-nav"><a href="{{ url_for('home') }}">Home</a></button>
-        <button class="button-nav"><a href="{{ url_for('shop') }}">Shop</a></button>
-        <button class="button-nav"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
-        <button class="button-nav"><a href="{{ url_for('settings') }}">Settings</a></button>
-    </div>
-    <div class="content">
-        <div class="table-container">
-            <div class="column table">
+    <!--Pet Stats Display Section -->
+    <div class = 'pet_status'>
+        <div class = 'title'>
+            <p id="p_name"></p>
+        </div>
+        <div class = 'pet_outer_container'>
+            <div class = 'home_menu'>
+                    <form_list>
+                        <button class="home_buttons"><a href="{{ url_for('home') }}">Home</a></button>
+                        <button class="home_buttons"><a href="{{ url_for('shop') }}">Shop</a></button>
+                        <button class="home_buttons"><a href="{{ url_for('pet_status') }}">Pet Status</a></button>
+                        <button class="home_buttons"><a href="{{ url_for('settings') }}">Settings</a></button>
+                    </form_list>
+            </div>
+            <div class = 'pet_container'>
                 <img id="pet-image" src="">
-                <div class="info">
-                    <p id="status"></p>
-                    <p id="health"></p>
-                </div>
-                <div class="actions">
-                    <h2 id="inventory">Inventory</h2>
-                    <ul id="item-list">
-                    </ul>
-                </div>
             </div>
-            <div class="column table">
-                <div class="recommendations">
-                    <h2 id="reco-actions">Recommended Actions</h2>
-                    <p id="reco-columns">Item Name | Price | Adjusted Effect</p>
-                    <ul id="reco-list">
-                    </ul>
-                </div>
+            <div class="pet_stats_container">
+                <form_list>
+                    <div class='pet_status_display'>
+                        
+                        <img src="static/images/warning.png" width="50" height="50" style="float: left; margin-right: 15px;">
+                        <p id="status"></p>
+                        
+                        <!-- <p id="health"></p> -->
+                    </div>
+                    <div class='hp_display'>
+                        <p id="health"></p>
+                    </div>
+                    
+                </form_list>
             </div>
-        </div>  
+
+        </div>
+    <div class="actions">
+        <div class = "inv">
+            <h2 id="inventory">Inventory</h2>
+            <ul id="item-list">
+            </ul>
+        
+        </div>
+    </div>
+
+    <div class = "recc"> 
+        <div class="column table">
+            <div class="recommendations">
+                <h2 id="reco-actions">Recommended Actions</h2>
+                <p id="reco-columns">Item Name | Price | Adjusted Effect</p>
+                <ul id="reco-list">
+                </ul>
+            </div>
+        </div>
+    </div>
+        
+    
+    
+    
+    <div class="content">
+        
+        
         <script>
             function updateStatus() {
                 console.log('update status')
@@ -46,8 +77,9 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById("status").textContent = "Pet Status: " + data.pet_status.status_name;
-                        document.getElementById("health").textContent = "Pet Health: " + data.pet_status.pet_health + "/100";
+                        document.getElementById("status").textContent =  data.pet_status.status_name;
+                        document.getElementById("p_name").textContent =  data.pet_status.pet_name;
+                        document.getElementById("health").textContent = "HP:" + data.pet_status.pet_health + "%";
                         document.getElementById("pet-image").src = "{{ url_for('static', filename='images/') }}" + data.pet_status.img_name;
                         updateItemList(data.items)
                         
