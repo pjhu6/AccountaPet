@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('db/accountapet.db')
+conn = sqlite3.connect('../db/accountapet.db')
 c = conn.cursor()
 
 # list all tables in the database
